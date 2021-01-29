@@ -1,62 +1,103 @@
 import React from 'react';
 import {View, Text, Button, Image} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
-import HomeScreen from './src/homeScreen';
-import UserScreen from './src/userScreen';
-const Stack = createStackNavigator();
 
-function LogoTitle() {
+import {NavigationContainer, CommonActions} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+
+const HomeScreen = ({navigation, route}) => {
   return (
-    <Image
-      style={{width: 50, height: 50}}
-      source={require('./assets/home_icon.png')}
-    />
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <Text>home</Text>
+      <Button
+        title="navigate to profile"
+        onPress={() =>
+          navigation.dispatch(
+            CommonActions.navigate({
+              name: 'Profile',
+              params: {
+                user: 'momo',
+              },
+            }),
+          )
+        }
+      />
+      <Button
+        title="go back"
+        onPress={() =>
+          navigation.dispatch({
+            ...CommonActions.goBack(),
+            source: route.key,
+            target: route?.params?.key,
+          })
+        }
+      />
+    </View>
   );
-}
+};
+const ProfileScreen = ({navigation, route}) => {
+  return (
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <Text>{route.params.user}'s profile</Text>
+      <Button
+        title="navigate to home"
+        onPress={() =>
+          navigation.dispatch(
+            CommonActions.navigate({
+              name: 'Home',
+            }),
+          )
+        }
+      />
+      <Button
+        title="reset"
+        onPress={() =>
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 1,
+              routes: [
+                {
+                  name: 'Profile',
+                  params: {user: 'momo', key: route.params.key},
+                },
+                {name: 'Home'},
+              ],
+            }),
+          )
+        }
+      />
+      <Button
+        title="change user param"
+        onPress={() =>
+          navigation.dispatch({
+            ...CommonActions.setParams({
+              user: 'whoo',
+            }),
+            source: route.key,
+          })
+        }
+      />
+      <Button
+        title="go back"
+        onPress={() =>
+          navigation.dispatch({
+            ...CommonActions.goBack(),
+            source: route.key,
+            target: route?.params?.key,
+          })
+        }
+      />
+    </View>
+  );
+};
+
+const Stack = createStackNavigator();
 
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerTitleStyle: {
-            textAlign: 'center',
-            flex: 1,
-          },
-        }}>
-        <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-          options={({route, navigation}) => ({
-            headerTitle: <LogoTitle />,
-            headerRight: () => (
-              <Button
-                onPress={() => {
-                  navigation.navigate('User', {
-                    name: 'go to home',
-                  });
-                }}
-                title="Info"
-                color="#00cc00"
-              />
-            ),
-          })}
-        />
-        <Stack.Screen
-          name="User"
-          component={UserScreen}
-          options={{
-            headerTitle: props => <LogoTitle {...props} />,
-            headerRight: () => (
-              <Button
-                onPress={() => alert('This is a button!')}
-                title="Info"
-                color="#00cc00"
-              />
-            ),
-          }}
-        />
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Profile" component={ProfileScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
