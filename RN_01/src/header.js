@@ -8,7 +8,7 @@ const Header = props => (
 );
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: 'grey',
+    backgroundColor: 'yellow',
     alignItems: 'center',
     padding: 5,
     width: '100%',

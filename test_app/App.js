@@ -6,17 +6,17 @@
  * @flow
  */
 
-import React, {Component} from 'react';
-import {View, Text} from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, TextInput} from 'react-native';
 
-class App extends Component {
-  render() {
-    return (
-      <View>
-        <Text> Hello World </Text>
-      </View>
-    );
-  }
-}
+const App = () => {
+  const [value, setValue] = useState('this it text place');
+  return (
+    <View>
+      <Text> Hello World </Text>
+      <TextInput onChangeText={value => setValue(value)} value={value} />
+    </View>
+  );
+};
 
 export default App;
