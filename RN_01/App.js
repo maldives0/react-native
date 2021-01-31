@@ -3,102 +3,55 @@ import {View, Text, Button, Image} from 'react-native';
 
 import {NavigationContainer, CommonActions} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 const HomeScreen = ({navigation, route}) => {
   return (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
       <Text>home</Text>
-      <Button
-        title="navigate to profile"
-        onPress={() =>
-          navigation.dispatch(
-            CommonActions.navigate({
-              name: 'Profile',
-              params: {
-                user: 'momo',
-              },
-            }),
-          )
-        }
-      />
-      <Button
-        title="go back"
-        onPress={() =>
-          navigation.dispatch({
-            ...CommonActions.goBack(),
-            source: route.key,
-            target: route?.params?.key,
-          })
-        }
-      />
     </View>
   );
 };
-const ProfileScreen = ({navigation, route}) => {
+const UserScreen = ({navigation, route}) => {
   return (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text>{route.params.user}'s profile</Text>
-      <Button
-        title="navigate to home"
-        onPress={() =>
-          navigation.dispatch(
-            CommonActions.navigate({
-              name: 'Home',
-            }),
-          )
-        }
-      />
-      <Button
-        title="reset"
-        onPress={() =>
-          navigation.dispatch(
-            CommonActions.reset({
-              index: 1,
-              routes: [
-                {
-                  name: 'Profile',
-                  params: {user: 'momo', key: route.params.key},
-                },
-                {name: 'Home'},
-              ],
-            }),
-          )
-        }
-      />
-      <Button
-        title="change user param"
-        onPress={() =>
-          navigation.dispatch({
-            ...CommonActions.setParams({
-              user: 'whoo',
-            }),
-            source: route.key,
-          })
-        }
-      />
-      <Button
-        title="go back"
-        onPress={() =>
-          navigation.dispatch({
-            ...CommonActions.goBack(),
-            source: route.key,
-            target: route?.params?.key,
-          })
-        }
-      />
+      <Text>User</Text>
+    </View>
+  );
+};
+const MessageScreen = ({navigation, route}) => {
+  return (
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <Text>Message</Text>
     </View>
   );
 };
 
-const Stack = createStackNavigator();
-
+const Tap = createBottomTabNavigator();
+const TabBarIcon = (focused, name) => {
+  let iconName, iconSize;
+  if (name === 'Home') {
+    iconName = 'home-outline';
+  } else if (name === 'User') {
+    iconName = 'people-outline';
+  } else if (name === 'Message') {
+    iconName = 'mail-outline';
+  }
+  iconSize = focused ? 30 : 20;
+  return <Ionicons size={iconSize} name={iconName} />;
+};
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Profile" component={ProfileScreen} />
-      </Stack.Navigator>
+      <Tap.Navigator
+        screenOptions={({route}) => ({
+          tabBarLabel: route.name,
+          tabBarIcon: ({focused}) => TabBarIcon(focused, route.name),
+        })}>
+        <Tap.Screen name="Home" component={HomeScreen} />
+        <Tap.Screen name="User" component={UserScreen} />
+        <Tap.Screen name="Message" component={MessageScreen} />
+      </Tap.Navigator>
     </NavigationContainer>
   );
 }
