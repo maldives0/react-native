@@ -1,36 +1,45 @@
 import React from 'react';
-import {View, Text, Button, Image} from 'react-native';
-
-import {NavigationContainer, CommonActions} from '@react-navigation/native';
+import {View, Text, Image, TouchableOpacity} from 'react-native';
+import DrawerHomeScreen from './src/drawerHomeScreen';
+import SubScreen from './src/SubScreen';
+import {
+  NavigationContainer,
+  useNavigation,
+  DrawerActions,
+} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Ionicons from 'react-native-vector-icons/dist/Ionicons';
-const HomeScreen = ({navigation, route}) => {
+import {createDrawerNavigator} from '@react-navigation/drawer';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+const TabHomeScreen = ({navigation, route}) => {
   return (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text>home</Text>
+      <Text>Tab home</Text>
     </View>
   );
 };
-const UserScreen = ({navigation, route}) => {
+const TabUserScreen = ({navigation, route}) => {
   return (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text>User</Text>
+      <Text>Tab User</Text>
     </View>
   );
 };
-const MessageScreen = ({navigation, route}) => {
+const TabMessageScreen = ({navigation, route}) => {
   return (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text>Message</Text>
+      <Text>Tab Message</Text>
     </View>
   );
 };
 
-const Tap = createBottomTabNavigator();
+const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
+const Drawer = createDrawerNavigator();
+
 const TabBarIcon = (focused, name) => {
   let iconName, iconSize;
-  if (name === 'Home') {
+  if (name === 'TabHome') {
     iconName = 'home-outline';
   } else if (name === 'User') {
     iconName = 'people-outline';
@@ -40,18 +49,67 @@ const TabBarIcon = (focused, name) => {
   iconSize = focused ? 30 : 20;
   return <Ionicons size={iconSize} name={iconName} />;
 };
+
+const TabComponent = () => {
+  return (
+    <Tab.Navigator
+      initialRouteName="TabHome"
+      screenOptions={({route}) => ({
+        tabBarLabel: route.name,
+        tabBarIcon: ({focused}) => TabBarIcon(focused, route.name),
+      })}>
+      <Tab.Screen name="TabHome" component={TabHomeScreen} />
+      <Tab.Screen name="User" component={TabUserScreen} />
+      <Tab.Screen name="Message" component={TabMessageScreen} />
+    </Tab.Navigator>
+  );
+};
+
+const DrawerComponent = () => {
+  return (
+    <Drawer.Navigator initialRouteName="DrawerHome" drawerType="front">
+      <Drawer.Screen
+        name="DrawerHome"
+        component={DrawerHomeScreen}
+        options={{
+          drawerIcon: () => (
+            <Image
+              style={{width: 30, height: 30}}
+              source={require('./assets/home_icon.png')}
+            />
+          ),
+        }}
+      />
+      <Drawer.Screen name="tab" component={TabComponent} />
+    </Drawer.Navigator>
+  );
+};
+const HeaderRight = () => {
+  const navigation = useNavigation();
+  return (
+    <View>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.dispatch(DrawerActions.toggleDrawer());
+        }}>
+        <Text>open</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
 function App() {
   return (
     <NavigationContainer>
-      <Tap.Navigator
-        screenOptions={({route}) => ({
-          tabBarLabel: route.name,
-          tabBarIcon: ({focused}) => TabBarIcon(focused, route.name),
-        })}>
-        <Tap.Screen name="Home" component={HomeScreen} />
-        <Tap.Screen name="User" component={UserScreen} />
-        <Tap.Screen name="Message" component={MessageScreen} />
-      </Tap.Navigator>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Main"
+          component={DrawerComponent}
+          options={{
+            headerRight: ({}) => <HeaderRight />,
+          }}
+        />
+        <Stack.Screen name="Sub" component={SubScreen} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }

@@ -9,12 +9,8 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, Text, Image, Button} from 'react-native';
 
-import {
-  launchCamera,
-  launchImageLibrary,
-  showImagePicker,
-} from 'react-native-image-picker';
-import Contacts from 'react-native-contacts';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+
 const App = () => {
   const [avatar, setAvatar] = useState('');
   const addImage = () => {

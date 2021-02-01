@@ -21,7 +21,7 @@ import {
 
 import Contacts from 'react-native-contacts';
 const App = () => {
-  const [myContacts, setMyContacts] = useState('');
+  const [myContacts, setMyContacts] = useState([]);
   const requestContactPermission = async () => {
     if (Platform.OS === 'ios') {
       console.warn('iOS');
