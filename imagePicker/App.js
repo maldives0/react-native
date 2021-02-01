@@ -15,6 +15,8 @@ import {
   Text,
   Image,
   Button,
+  ScrollView,
+  SafeAreaView,
 } from 'react-native';
 
 import Contacts from 'react-native-contacts';
@@ -48,7 +50,7 @@ const App = () => {
       if (didGetPermission) {
         Contacts.getAll()
           .then((contacts) => {
-            console.warn(contacts);
+            // console.warn(contacts);
             setMyContacts(contacts);
           })
           .catch((err) => {
@@ -63,11 +65,26 @@ const App = () => {
   const addContacts = () => {
     requestContactPermission().then((didGetPermission) => {
       if (didGetPermission) {
-        Contacts.getAll()
-          .then((contacts) => {
+        const newContact = {
+          emailAddress: [
+            {
+              label: 'work',
+              email: 'jjj@example.com',
+            },
+          ],
+          familyName: 'jung',
+          givenName: 'juyoung',
+          phoneNumbers: [
+            {
+              label: 'mobile',
+              number: '(010) 5555-5555',
+            },
+          ],
+        };
+        Contacts.addContact(newContact)
+          .then(() => {
             // console.warn(contacts);
-            setMyContacts(contacts);
-            console.warn('1', myContacts);
+            getContacts();
           })
           .catch((err) => {
             console.error(err);
@@ -78,19 +95,31 @@ const App = () => {
       }
     });
   };
+  const openForm = () => {
+    Contacts.openContactForm({})
+      .then(() => {})
+      .catch((err) => {
+        console.error(err);
+      });
+  };
   return (
-    <View style={styles.container}>
-      {/* {myContacts?.map((item, idx) => {
-        return (
-          <Text key={idx}>
-            {item.givenName}
-            {item.familyName}
-          </Text>
-        );
-      })} */}
-      <Button title="load contacts" onPress={() => getContacts()} />
-      <Button title="add contacts" onPress={() => addContacts()} />
-    </View>
+    <SafeAreaView>
+      <ScrollView>
+        <View style={styles.container}>
+          {myContacts.map((item, idx) => {
+            return (
+              <Text key={idx}>
+                {item.givenName}
+                {item.familyName}
+              </Text>
+            );
+          })}
+          <Button title="load contacts" onPress={() => getContacts()} />
+          <Button title="add contacts" onPress={() => addContacts()} />
+          <Button title="open form" onPress={() => openForm()} />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -99,7 +128,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'blue',
   },
   avatar: {
     width: '100%',
