@@ -3,6 +3,7 @@ import {TouchableOpacity, ScrollView, StyleSheet} from 'react-native';
 import {ListItem, Badge, Text} from 'native-base';
 
 const CategoryFilter = (props) => {
+  console.log(props);
   return (
     <ScrollView
       bounces={true}
@@ -11,7 +12,9 @@ const CategoryFilter = (props) => {
       <ListItem style={{margin: 0, padding: 0, borderRadius: 0}}>
         <TouchableOpacity
           key={1}
-          onPress={(() => props.categoryFilter('all'), props.setActive(-1))}>
+          onPress={() => {
+            props.categoryFilter('all'), props.setActive(-1);
+          }}>
           <Badge
             style={[
               styles.center,
@@ -23,7 +26,7 @@ const CategoryFilter = (props) => {
         </TouchableOpacity>
         {props.categories.map((item) => (
           <TouchableOpacity
-            key={item._id}
+            key={item._id.$oid}
             onPress={() => {
               props.categoryFilter(item._id),
                 props.setActive(props.categories.indexOf(item));

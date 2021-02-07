@@ -36,7 +36,7 @@ const ProductContainer = (props) => {
     setCategories(categoryDate);
     setActive(-1);
     setInitialState(data);
-
+    setProductsCtg(data);
     return () => {
       setProducts([]);
       setProductsFiltered([]);
@@ -118,7 +118,7 @@ const ProductContainer = (props) => {
                       return (
                         <ProductList
                           navigation={props.navigation}
-                          key={item._id}
+                          key={item._id.$oid}
                           item={item}
                         />
                       );
