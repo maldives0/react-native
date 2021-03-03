@@ -73,12 +73,25 @@ class Fling extends Component {
     );
   }
 }
-
+const LongPressButton = () => (
+  <FlingGestureHandler
+    direction={Directions.RIGHT | Directions.LEFT}
+    onHandlerStateChange={({ nativeEvent }) => {
+      if (nativeEvent.state === State.ACTIVE) {
+        Alert.alert("I'm flinged!");
+    }}>
+    <View style={styles.box} />
+  </FlingGestureHandler>
+);
 export default class Example extends Component {
   render() {
     return (
       <View>
+        <LongPressButton
+          style={{ width: 100, height: 50, backgroundColor: 'brown' }}
+        />
         <Fling />
+
         <Text>
           Move up (with two fingers) or right/left (with one finger) and watch
           magic happens
