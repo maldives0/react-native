@@ -17,7 +17,7 @@ let welcomeMessage = {
 };
 const TabHomeScreen = ({navigation, route}) => {
   const [messages, setMessages] = useState([welcomeMessage]);
-
+  console.log(messages);
   useEffect(() => {
     Dialogflow_V2.setConfiguration(
       dialogflowConfig.client_email,
@@ -29,9 +29,9 @@ const TabHomeScreen = ({navigation, route}) => {
 
   const handleGoogleResponse = (result) => {
     let text =
-      result.queryResult?.fulfillmentMessages[0].text.text ||
+      result.queryResult.fulfillmentText ||
       '제가 이해를 잘 못한 것 같아요. 다시 한번 말씀해주시겠어요?';
-
+    // console.log('result:', result.queryResult.fulfillmentText);
     sendBotResponse(text);
   };
 
@@ -47,13 +47,14 @@ const TabHomeScreen = ({navigation, route}) => {
   };
 
   const onSend = useCallback(
-    (newMessages = []) => {
+    (newMessage = []) => {
       setMessages((previousMessages) =>
-        GiftedChat.append(previousMessages, newMessages),
+        GiftedChat.append(previousMessages, newMessage),
       );
-      let sendMessage = messages[0].text;
+
+      console.log('send:', newMessage[0].text);
       Dialogflow_V2.requestQuery(
-        sendMessage,
+        newMessage[0].text,
         (result) => handleGoogleResponse(result),
         (error) => console.dir(error),
       );
