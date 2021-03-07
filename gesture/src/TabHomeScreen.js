@@ -61,7 +61,27 @@ const TabHomeScreen = ({navigation, route}) => {
     },
     [messages],
   );
-
+const optionChips = ()=>{
+  return(
+    <View style={{flexDirection:'row', flex:1}}>
+      <View style={{width:30,height:30, backgroundColor:'yellowgreen', borderRadius:100}}>
+        <Text onPress={()=>console.warn('hi')}>
+        info center
+        </Text>
+      </View>
+      <View style={{width:70,height:30, backgroundColor:'yellowgreen', borderRadius:100}}>
+        <Text>
+        asking
+        </Text>
+      </View>
+      <View style={{width:70,height:30, backgroundColor:'yellowgreen', borderRadius:100}}>
+        <Text>
+        etc
+        </Text>
+      </View>
+    </View>
+  )
+}
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
       <GiftedChat
@@ -70,6 +90,7 @@ const TabHomeScreen = ({navigation, route}) => {
         user={{
           _id: 1,
         }}
+        renderChatFooter={optionChips}
       />
     </View>
   );

@@ -53,7 +53,7 @@ const TabComponent = () => {
       initialRouteName="TabHomeScreen"
       screenOptions={({route}) => ({
         tabBarLabel: route.name,
-        tabBarIcon: ({focused}) => TabBarIcon(focused, route.name),
+        // tabBarIcon: ({focused}) => TabBarIcon(focused, route.name),
       })}
       tabBarOptions={{
         activeTintColor: 'green',
