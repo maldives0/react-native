@@ -4,6 +4,8 @@ import {GiftedChat} from 'react-native-gifted-chat';
 import {Dialogflow_V2} from 'react-native-dialogflow';
 
 import {dialogflowConfig} from '../env';
+import LocalNotification from '../utils/LocalNotification';
+
 const BOT_USER = {
   _id: 2,
   name: 'FAQ Bot',
@@ -61,27 +63,46 @@ const TabHomeScreen = ({navigation, route}) => {
     },
     [messages],
   );
-const optionChips = ()=>{
-  return(
-    <View style={{flexDirection:'row', flex:1}}>
-      <View style={{width:30,height:30, backgroundColor:'yellowgreen', borderRadius:100}}>
-        <Text onPress={()=>console.warn('hi')}>
-        info center
-        </Text>
+
+  useEffect(() => {
+    LocalNotification.register();
+    return () => {
+      LocalNotification.unregister();
+    };
+  }, []);
+  const optionChips = () => {
+    return (
+      <View style={{flexDirection: 'row'}}>
+        <View
+          style={{
+            width: 30,
+            height: 30,
+            backgroundColor: 'yellowgreen',
+            borderRadius: 100,
+          }}>
+          <Text onPress={() => LocalNotification.register()}>info center</Text>
+        </View>
+        <View
+          style={{
+            width: 70,
+            height: 30,
+            backgroundColor: 'yellowgreen',
+            borderRadius: 100,
+          }}>
+          <Text>asking</Text>
+        </View>
+        <View
+          style={{
+            width: 70,
+            height: 30,
+            backgroundColor: 'yellowgreen',
+            borderRadius: 100,
+          }}>
+          <Text>etc</Text>
+        </View>
       </View>
-      <View style={{width:70,height:30, backgroundColor:'yellowgreen', borderRadius:100}}>
-        <Text>
-        asking
-        </Text>
-      </View>
-      <View style={{width:70,height:30, backgroundColor:'yellowgreen', borderRadius:100}}>
-        <Text>
-        etc
-        </Text>
-      </View>
-    </View>
-  )
-}
+    );
+  };
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
       <GiftedChat
@@ -90,7 +111,7 @@ const optionChips = ()=>{
         user={{
           _id: 1,
         }}
-        renderChatFooter={optionChips}
+        // renderChatFooter={optionChips}
       />
     </View>
   );

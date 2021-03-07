@@ -91,6 +91,7 @@ const HeaderRight = () => {
   );
 };
 const App = () => {
+  // FirebaseApp.initializeApp();
   return (
     <>
       <NavigationContainer>
