@@ -64,6 +64,7 @@ const TabHomeScreen = ({navigation, route}) => {
     [messages],
   );
 
+<<<<<<< HEAD
   useEffect(() => {
     LocalNotification.register();
     return () => {
@@ -100,6 +101,29 @@ const TabHomeScreen = ({navigation, route}) => {
           }}>
           <Text>etc</Text>
         </View>
+=======
+useEffect(()=>{
+  LocalNotification.register();
+  return ()=>  {LocalNotification.unregister();}
+},[])
+const optionChips = ()=>{
+  return(
+    <View style={{flexDirection:'row'}}>
+      <View style={{width:30,height:30, backgroundColor:'yellowgreen', borderRadius:100}}>
+        <Text onPress={()=> LocalNotification.register()}>
+        info center
+        </Text>
+      </View>
+      <View style={{width:70,height:30, backgroundColor:'yellowgreen', borderRadius:100}}>
+        <Text>
+        asking
+        </Text>
+      </View>
+      <View style={{width:70,height:30, backgroundColor:'yellowgreen', borderRadius:100}}>
+        <Text>
+        etc
+        </Text>
+>>>>>>> 5cf3154076e53221158032d22b057a2b4cb69b39
       </View>
     );
   };
